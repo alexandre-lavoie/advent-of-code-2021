@@ -13,4 +13,4 @@ print("Task 1:", gamma * epsilon)
 
 # TODO
 
-print("Task 2:", 0)
+print("Task 2:", "TODO")
