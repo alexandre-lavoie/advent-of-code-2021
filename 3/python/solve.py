@@ -11,6 +11,18 @@ epsilon = int(''.join(epsilon), 2)
 
 print("Task 1:", gamma * epsilon)
 
-# TODO
+def rating(type, data, bit=0):
+    if len(data) == 1:
+        return data[0]
 
-print("Task 2:", "TODO")
+    total = sum([1 if v[bit] == '1' else 0 for v in data])
+    common = '1' if total / len(data) >= 0.5 else '0'
+
+    if type == "c02":
+        common = '0' if common == '1' else '1'
+
+    data = [v for v in data if v[bit] == common]
+
+    return rating(type, data, bit + 1)
+
+print("Task 2:", int(rating("oxygen", data), 2) * int(rating("c02", data), 2))
