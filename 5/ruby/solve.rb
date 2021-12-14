@@ -9,7 +9,7 @@ def task(check_line)
     data.each{|p1, p2|
         direction = (p2 - p1).normalize.round
 
-        if check_line and direction.map{|v| v.abs}.sum > 1
+        if check_line and direction.map(&:abs).sum > 1
             next
         end
 
