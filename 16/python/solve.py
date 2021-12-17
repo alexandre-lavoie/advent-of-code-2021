@@ -143,8 +143,9 @@ def interpret(packet: Packet) -> int:
     else:
         return int(TYPE_INTERPRETERS[packet.type]([interpret(child) for child in packet.value]))
 
-parser = Parser.from_file("../input.txt")
-packet = parser.parse_packet()
+if __name__ == "__main__":
+    parser = Parser.from_file("../input.txt")
+    packet = parser.parse_packet()
 
-print("Task 1:", version_sum(packet))
-print("Task 2:", interpret(packet))
+    print("Task 1:", version_sum(packet))
+    print("Task 2:", interpret(packet))
