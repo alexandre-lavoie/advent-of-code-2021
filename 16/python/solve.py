@@ -12,6 +12,24 @@ class Type(Enum):
     LESS_THAN=6
     EQUAL_TO=7
 
+TYPE_INTERPRETERS: Dict[Type, Callable[List[int], any]] = {
+    Type.SUM: sum,
+    Type.PRODUCT: product,
+    Type.MINIMUM: min,
+    Type.MAXIMUM: max,
+    Type.GREATER_THAN: lambda a: a[0] > a[1],
+    Type.LESS_THAN: lambda a: a[0] < a[1],
+    Type.EQUAL_TO: lambda a: a[0] == a[1]
+}
+
+def product(values: int) -> int:
+    product = 1
+
+    for value in values:
+        product *= value
+
+    return product
+
 @dataclass
 class Packet():
     version: int
@@ -45,9 +63,6 @@ class Parser():
         return cls.from_hex(open(path).read())
 
     def parse_bits(self, n: int) -> int:
-        if self.pointer + n >= len(self.bits):
-            raise Exception("Parsing past bits size.")
-
         bits = self.bits[self.pointer:self.pointer+n]
         self.pointer += n
 
@@ -121,24 +136,6 @@ def version_sum(packet: Packet):
         return packet.version
     else:
         return packet.version + sum(version_sum(child) for child in packet.value)
-
-def product(values: int) -> int:
-    product = 1
-
-    for value in values:
-        product *= value
-
-    return product
-
-TYPE_INTERPRETERS: Dict[Type, Callable[List[int], any]] = {
-    Type.SUM: sum,
-    Type.PRODUCT: product,
-    Type.MINIMUM: min,
-    Type.MAXIMUM: max,
-    Type.GREATER_THAN: lambda a: a[0] > a[1],
-    Type.LESS_THAN: lambda a: a[0] < a[1],
-    Type.EQUAL_TO: lambda a: a[0] == a[1]
-}
 
 def interpret(packet: Packet) -> int:
     if packet.type == Type.LITERAL:
