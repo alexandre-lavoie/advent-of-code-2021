@@ -40,7 +40,7 @@ def main(path):
             if intersect:
                 regions[intersect] -= regions[region]
         if state:
-            regions[cuboid] = 1
+            regions[cuboid] += 1
 
     print("Task 1:", sum(volume(intersection(TASK1_DOMAIN, region)) * count for region, count in regions.items()))
     print("Task 2:", sum(volume(region) * count for region, count in regions.items()))
